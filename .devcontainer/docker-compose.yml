@@ -1,0 +1,51 @@
+services:
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    volumes:
+      - ../src:/workspace
+    depends_on:
+      - php
+    networks:
+      - laravel_dev_network
+
+  php:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    volumes:
+      - ../src:/workspace
+    working_dir: /workspace
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: laravel
+      DB_USERNAME: postgres
+      DB_PASSWORD: secret
+    depends_on:
+      - postgres
+    networks:
+      - laravel_dev_network
+
+  postgres:
+    build:
+      context: ./postgres
+      dockerfile: Dockerfile
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: laravel
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - laravel_dev_network
+
+networks:
+  laravel_dev_network:
+    driver: bridge
+
+volumes:
+  pgdata:

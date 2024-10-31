@@ -1,0 +1,20 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/php
+{
+  "name": "Laravel Dev Container",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "php",
+  "workspaceFolder": "/workspace",
+  "extensions": [
+      "ms-azuretools.vscode-docker",
+      "mikestead.dotenv",
+      "bmewburn.vscode-intelephense-client"
+  ],
+  "settings": {
+      "terminal.integrated.shell.linux": "/bin/bash",
+      "editor.formatOnSave": true
+  },
+  "postCreateCommand": "composer install && php artisan key:generate",
+  "remoteUser": "root"
+}
+
